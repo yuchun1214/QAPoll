@@ -1,0 +1,46 @@
+button{
+    color: black;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.title{
+    font-family: "Gill Sans", sans-serif;
+    font-weight: 300;
+}
+
+.background  {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -999;
+    opacity: 0.4;
+    background-image: url('/indexBackground.jpg');
+    background-size:cover;
+
+    /* -webkit-animation: slidein 100s; */
+    animation: slidein 30s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;              
+}
+
+@keyframes slidein {
+from {
+    background-position: 50% 50%; 
+    background-size:1600px; 
+}
+
+to {
+    background-position: 50% 25%;
+    background-size:2000px;
+}
+
+}

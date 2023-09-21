@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+/* Modal content styles */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Close button styles */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        Copy your url here: <input type="text" id="url" value="http://127.0.0.1:5500/room/abc-def"> <button id="copy"> copy </button>
+    </div>
+    <div>
+        Password of the room: <input type="text" id="password" value="123456"> <button id="copy"> copy </button>
+    </div>
+    <div id="questions">
+        <h1> Questions </h1>
+        <div class="question">
+            <div class="question-title">
+                <h2> Question 1 </h2>
+            </div>
+            <div class="question-content">
+                <p> How's the weather? </p>
+            </div>
+            <div class="answers">
+                <ul>
+                    <li>A: Good</li>
+                    <li>B: Bad</li>
+                    <li>C: Normal</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <button id="addQuestionBtn">
+        Add question
+    </button>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div>
+                What's your question?
+                <input type="text">
+            </div>
+            <div>
+                What is your type of question?
+                <select name="type" id="type">
+                    <option value="short">Short answer</option>
+                    <option value="multiple">Multiple choice</option>
+                </select>
+            </div>
+
+            <!-- If the option is multiple choice -->
+            <div id="multiple" style="display: none;">
+                <!-- <div class="choice">
+                    <input type="text">
+                </div> -->
+                <button id="addChoice">Add Choice</button>
+            </div>
+            <button id="submit">
+                submit
+            </button>
+        </div>
+    </div>
+
+</body>
+<script>
+var modal = document.getElementById('myModal');
+var closeButton = document.querySelector('.close');
+
+function openModal() {
+    modal.style.display = 'block';
+}
+
+function closeModal() {
+    modal.style.display = 'none';
+}
+
+document.getElementById('addQuestionBtn').addEventListener('click', openModal);
+
+closeButton.addEventListener('click', closeModal);
+
+window.addEventListener('click', function(event) {
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
+
+// Get references to the elements
+var typeSelect = document.getElementById('type');
+var addChoiceButton = document.getElementById('addChoice');
+var multipleDiv = document.getElementById('multiple');
+
+// Add an event listener to the select field
+typeSelect.addEventListener('change', function () {
+    if (typeSelect.value === 'multiple') {
+        // Show the "Add Choice" button when the value is "Multiple choice"
+        multipleDiv.style.display = 'block';
+    } else {
+        // Hide the "Add Choice" button for other options
+        multipleDiv.style.display = 'none';
+    }
+});
+
+var addChoiceButton = document.getElementById('addChoice');
+var multipleDiv = document.getElementById('multiple');
+addChoiceButton.addEventListener('click', function () {
+    var choiceDiv = document.createElement('div');
+    choiceDiv.classList.add('choice');
+    choiceDiv.innerHTML = '<input type="text">';
+    multipleDiv.appendChild(choiceDiv);
+});
+
+</script>
+</html>
