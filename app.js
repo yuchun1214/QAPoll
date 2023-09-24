@@ -1,20 +1,21 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const querystring = require('node:querystring');
 
 var dt = require('./modules/dateModule')
 
 
 const route = {
-    '/': (req, res) => {
+    '/': (req, res, parameters) => {
         const filePath = path.join(__dirname, 'public', 'index.html')
         _staticFileHandler(filePath, res); 
     },
-    '/host': (req, res) => {
+    '/host': (req, res, parameters) => {
         const filePath = path.join(__dirname, 'public', 'host.html')
         _staticFileHandler(filePath, res); 
     },
-    '/about': (req, res) => {
+    '/about': (req, res, parameters) => {
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.end('About page!');
     }
@@ -76,7 +77,11 @@ function _staticFileHandler(filePath, res) {
 const server = http.createServer(function(req, res) {
     const filePath = path.join(__dirname, 'public', req.url)
     const contentType = getContentType(filePath);
-     
+    console.log(req.url); 
+    var qstring = querystring.parse(req.url.split('?')[1]);
+    console.log(qstring)
+    console.log(qstring.room)
+    req.url = req.url.split('?')[0];
     if(route[req.url]) {
         route[req.url](req, res);
         return;

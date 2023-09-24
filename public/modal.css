@@ -19,10 +19,18 @@
     transform: translate(-50%, -50%);
 }
 
+.modal-title{
+    display:inline-block;
+    margin: 0;
+}
+
+.modal-head{
+    border-bottom: 2px solid #eee;
+    margin-bottom: 1rem;
+}
+
 /* Close button styles */
 .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    float: right;
     cursor: pointer;
 }

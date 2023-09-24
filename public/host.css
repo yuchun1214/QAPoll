@@ -13,3 +13,14 @@ body{
     padding: 1.5rem;
     border-radius: 5px;
 }
+
+#addQuestionBtn{
+    display: flex;
+    justify-content: center;
+    border-style: dashed;
+    cursor: pointer;
+}
+
+#addQuestionBtn:hover{
+    background-color: rgba(245, 247, 250, 1);
+}

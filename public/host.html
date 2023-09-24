@@ -19,64 +19,52 @@
             </div>
         </div>
 
-        <div class="container">
-            <div id="questions">
-                <h1> Questions </h1>
-                <div class="question">
-                    <div class="question-title">
-                        <h2> Question 1 </h2>
-                    </div>
-                    <div class="question-content">
-                        <p> How's the weather? </p>
-                    </div>
-                    <div class="answers">
-                        <ul>
-                            <li>A: Good</li>
-                            <li>B: Bad</li>
-                            <li>C: Normal</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <button id="addQuestionBtn">
-                Add question
-            </button>
+        <div id="questions">
+                         
+        </div>
+        
 
+        <div class="container" id="addQuestionBtn">
+            +
         </div>
     </div>
     
     
-    <div id="myModal" class="modal">
+    <div id="add-question-modal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <div class="modal-head">
+                <h2 class="modal-title">
+                    Add a question
+                </h2>
+                <span class="close">&times;</span>
+            </div>
+
             <div>
                 What's your question?
-                <input type="text">
+                <input type="text" name="question">
             </div>
+
             <div>
-                What is your type of question?
+                What is the type of question?
                 <select name="type" id="type">
                     <option value="short">Short answer</option>
                     <option value="multiple">Multiple choice</option>
                 </select>
+                <button id="addChoice" style="display: none;">Add Choice</button>
             </div>
 
             <!-- If the option is multiple choice -->
             <div id="multiple" style="display: none;">
-                <!-- <div class="choice">
-                    <input type="text">
-                </div> -->
-                <button id="addChoice">Add Choice</button>
             </div>
             <button id="submit">
-                submit
+                Submit
             </button>
         </div>
     </div>
 
 </body>
 <script>
-var modal = document.getElementById('myModal');
+var modal = document.getElementById('add-question-modal');
 var closeButton = document.querySelector('.close');
 
 function openModal() {
@@ -97,7 +85,6 @@ window.addEventListener('click', function(event) {
     }
 });
 
-
 // Get references to the elements
 var typeSelect = document.getElementById('type');
 var addChoiceButton = document.getElementById('addChoice');
@@ -108,20 +95,95 @@ typeSelect.addEventListener('change', function () {
     if (typeSelect.value === 'multiple') {
         // Show the "Add Choice" button when the value is "Multiple choice"
         multipleDiv.style.display = 'block';
+        addChoiceButton.style.display = 'block'; 
     } else {
         // Hide the "Add Choice" button for other options
         multipleDiv.style.display = 'none';
+        addChoiceButton.style.display = 'none';
     }
 });
 
-var addChoiceButton = document.getElementById('addChoice');
 var multipleDiv = document.getElementById('multiple');
+var numberOfQuestion = 0;
 addChoiceButton.addEventListener('click', function () {
     var choiceDiv = document.createElement('div');
     choiceDiv.classList.add('choice');
-    choiceDiv.innerHTML = '<input type="text">';
+    choiceDiv.innerHTML = `<input type="text" class="choice">`;
     multipleDiv.appendChild(choiceDiv);
 });
+
+var submitBtn = document.getElementById('submit');
+submitBtn.addEventListener('click', ()=>{
+    console.log("Submit");
+    var question = document.querySelector('input[name="question"]').value;
+    var type = document.querySelector('select[name="type"]').value;
+
+    let object = {};
+
+    if(type === "short") {
+        var choices = [];
+
+        object = {
+            question: question,
+            type: type,
+        }
+        console.log(object); 
+        var anwser_html = `
+            <div class="answers">
+                <ul>
+                </ul>
+            </div> 
+        `;
+    } else {
+        var choices = document.querySelectorAll('input[class="choice"]');
+        var choices_value = [];
+        for(var i = 0; i < choices.length; i++) {
+            choices_value.push(choices[i].value);
+        }
+        object = {
+            question: question,
+            type: type,
+            choices: choices_value
+        }
+        console.log(object);
+
+        var choice_html = '';
+        for(var i = 0; i < choices_value.length; i++) {
+            choice_html += `<li>${choices_value[i]}</li>`;
+        }
+        var anwser_html = `
+        <div class="answers">
+            <ul>
+                ${choice_html}
+            </ul>
+        </div> 
+        `
+    }
+    
+   numberOfQuestion++; 
+
+   
+
+    var questionContent = `
+    <div class="container">
+        <div class="question">
+            <div class="question-title">
+                <h2> Question ${numberOfQuestion} </h2>
+            </div>
+            <div class="question-content">
+                <p> ${object.question} </p>
+            </div>
+            ${anwser_html} 
+        </div>
+    </div> 
+    `
+    var questions = document.getElementById('questions');
+    questions.innerHTML += questionContent;
+
+    var modal = document.getElementById('add-question-modal');
+    modal.style.display = 'none';
+
+})
 
 </script>
 </html>
