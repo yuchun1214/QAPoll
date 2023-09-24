@@ -15,10 +15,10 @@ const route = {
         const filePath = path.join(__dirname, 'public', 'host.html')
         _staticFileHandler(filePath, res); 
     },
-    '/about': (req, res, parameters) => {
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end('About page!');
-    }
+    '/join': (req, res, parameters) => {
+        const filePath = path.join(__dirname, 'public', 'participant.html')
+        _staticFileHandler(filePath, res);
+    },
 }
 
 const middleware = [
