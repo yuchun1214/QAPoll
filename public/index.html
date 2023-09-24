@@ -19,4 +19,18 @@
         <button class="button-wrn" id="createBtn"> create </button>
      </div>
 </body>
+<script>
+    const joinBtn = document.getElementById('joinBtn');
+    const createBtn = document.getElementById('createBtn');
+    const roomIdInput = document.getElementById('roomIdInput');
+
+    joinBtn.addEventListener('click', () => {
+        const roomId = roomIdInput.value;
+        window.location.href = `/join?room=${roomId}`;
+    });
+
+    createBtn.addEventListener('click', () => {
+        window.location.href = `/host?room=${Math.random().toString(36).substring(2, 15)}`;
+    });
+</script>
 </html>
