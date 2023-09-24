@@ -3,68 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        /* Modal styles */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-}
-
-/* Modal content styles */
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-/* Close button styles */
-.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-}
-
-    </style>
+    <link rel="stylesheet" href="./host.css">
+    <link rel="stylesheet" href="./modal.css">
+    <link rel="stylesheet" href="./global.css">
     <title>Document</title>
 </head>
 <body>
-    <div>
-        Copy your url here: <input type="text" id="url" value="http://127.0.0.1:5500/room/abc-def"> <button id="copy"> copy </button>
-    </div>
-    <div>
-        Password of the room: <input type="text" id="password" value="123456"> <button id="copy"> copy </button>
-    </div>
-    <div id="questions">
-        <h1> Questions </h1>
-        <div class="question">
-            <div class="question-title">
-                <h2> Question 1 </h2>
+    <div class="main-container">
+        <div class="container">
+            <div>
+                Copy your url here: <input type="text" id="url" value="http://127.0.0.1:5500/room/abc-def"> <button id="copy"> copy </button>
             </div>
-            <div class="question-content">
-                <p> How's the weather? </p>
-            </div>
-            <div class="answers">
-                <ul>
-                    <li>A: Good</li>
-                    <li>B: Bad</li>
-                    <li>C: Normal</li>
-                </ul>
+            <div>
+                Password of the room: <input type="text" id="password" value="123456"> <button id="copy"> copy </button>
             </div>
         </div>
+
+        <div class="container">
+            <div id="questions">
+                <h1> Questions </h1>
+                <div class="question">
+                    <div class="question-title">
+                        <h2> Question 1 </h2>
+                    </div>
+                    <div class="question-content">
+                        <p> How's the weather? </p>
+                    </div>
+                    <div class="answers">
+                        <ul>
+                            <li>A: Good</li>
+                            <li>B: Bad</li>
+                            <li>C: Normal</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <button id="addQuestionBtn">
+                Add question
+            </button>
+
+        </div>
     </div>
-    <button id="addQuestionBtn">
-        Add question
-    </button>
+    
+    
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>

@@ -7,8 +7,12 @@ var dt = require('./modules/dateModule')
 
 const route = {
     '/': (req, res) => {
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end('Hello World!');
+        const filePath = path.join(__dirname, 'public', 'index.html')
+        _staticFileHandler(filePath, res); 
+    },
+    '/host': (req, res) => {
+        const filePath = path.join(__dirname, 'public', 'host.html')
+        _staticFileHandler(filePath, res); 
     },
     '/about': (req, res) => {
         res.writeHead(200, {'Content-Type': 'text/html'});
@@ -46,12 +50,13 @@ function getContentType(filePath){
     }
 }
 
-const server = http.createServer(function(req, res) {
+function staticFileHandler(req, res) {
     const filePath = path.join(__dirname, 'public', req.url)
-    const contentType = getContentType(filePath);
-    console.log(filePath);
-    console.log(contentType);
+    _staticFileHandler(filePath, res);
+}
 
+function _staticFileHandler(filePath, res) {
+    const contentType = getContentType(filePath);
     fs.readFile(filePath, (err, content) => {
         if(err){
             if (err.code === 'ENOENT') {
@@ -65,21 +70,32 @@ const server = http.createServer(function(req, res) {
             res.writeHead(200, {'Content-Type': contentType});
             res.end(content);
         }
-    });
+    })
+}
 
-    let currentIndex = 0;
-    const next = () => {
-        if(currentIndex < middleware.length) {
-            middleware[currentIndex++](req, res, next);
-        }
+const server = http.createServer(function(req, res) {
+    const filePath = path.join(__dirname, 'public', req.url)
+    const contentType = getContentType(filePath);
+     
+    if(route[req.url]) {
+        route[req.url](req, res);
+        return;
+    } else if(contentType !== 'text/html'){
+        staticFileHandler(req, res);
+    } else {
+        res.writeHead(404, {'Content-Type': 'text/html'});
+        res.end('404 Not Found');
     }
-    next();
+     
 
-    // if(route[req.url]) {
-    //     route[req.url](req, res);
-    // } else {
-    //     res.writeHead(404, {'Content-Type': 'text/html'});
-    //     res.end('404 Not Found');
+    // let currentIndex = 0;
+    // const next = () => {
+    //     if(currentIndex < middleware.length) {
+    //         middleware[currentIndex++](req, res, next);
+    //     }
     // }
+    // next();
+
+    
 
 }).listen(8080);

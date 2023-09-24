@@ -22,7 +22,7 @@ body{
     height: 100%;
     z-index: -999;
     opacity: 0.4;
-    background-image: url('/indexBackground.jpg');
+    background-image: url('./indexBackground.jpg');
     background-size:cover;
 
     /* -webkit-animation: slidein 100s; */

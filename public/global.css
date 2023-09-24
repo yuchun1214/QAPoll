@@ -2,11 +2,19 @@ input{
     outline: none;
     height: 1.5rem;
     width: 25rem;
+    border-color: lightgrey;
+    border-radius: .3rem;
+    background:#f1f1f1; 
+    border:1px solid #ccc;
+}
+
+body{
+    margin: 0%;
 }
 
 button{
     height: 1.5rem;
-    width: 5rem;
+    width: auto;
     margin-left: 1rem;
     border: none;
     border-radius: 5px;
