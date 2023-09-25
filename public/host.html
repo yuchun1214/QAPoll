@@ -66,17 +66,35 @@
 <script>
 // tell the server you are the host and the room ID, room ID is in the URL
 // the server will setup a room for you
-window.addEventListener('load', ()=>{
-    fetch('/create-room', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            room: window.location.pathname.split('/')[2]
-        })
-    })
-})
+window.addEventListener('load', async () => {
+    const url = new URL(window.location.href);
+    const roomName = url.searchParams.get('room');
+    const data = {
+        'room': roomName
+    };
+
+    console.log(JSON.stringify(roomName));;
+
+    try {
+        const response = await fetch('/initialize-room', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            console.log('Server response:', responseData);
+        } else {
+            console.error('Request failed with status:', response.status);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+
 
 </script>
 

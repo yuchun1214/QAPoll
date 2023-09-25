@@ -2,6 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const querystring = require('node:querystring');
+var bodyParser = require('body-parser');
 require('dotenv').config();
 
 const { MongoClient } = require("mongodb");
@@ -34,6 +35,7 @@ if (process.env.NODE_ENV === 'development') {
 const route = {
     '/': (req, res, parameters) => {
         const filePath = path.join(__dirname, 'public', 'index.html')
+
         _staticFileHandler(filePath, res); 
     },
     '/host': (req, res, parameters) => {
@@ -44,21 +46,52 @@ const route = {
         const filePath = path.join(__dirname, 'public', 'participant.html')
         _staticFileHandler(filePath, res);
     },
-    '/create-room': (req, res, parameters) => {
+    '/initialize-room': (req, res, parameters) => {
         console.log('create-room');
-        console.log(req.body);
         // create a room check if it already exists in the database
         // if it does not exist, initialize a document for it
         // if it does exist, return return previous questions and response
+        bodyParser.json()(req, res, ()=>{
+            console.log('bodyParser')
+            console.log(req.body);
 
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end('create-room');
+            clientPromise.then((client) => {
+                const db = client.db('test');
+                const collection = db.collection('rooms');
+                collection.updateOne(
+                    {'room_id' : req.body.room},
+                    {$set: {'room_id' : req.body.room}},
+                    {upsert: true},
+             )}
+            );
+        
+            clientPromise.then(async (client) => {
+                const db = client.db('test');
+                const collection = db.collection('rooms');
+                
+                const query = {'room_id' : req.body.room};
+                const options = {
+                    projection : {
+                        room_id: 1, questions: 1
+                    }
+                }
+
+                const result = await collection.findOne(query, options)
+                console.log(result);
+            });
+
+
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end('create-room');
+        })
+        // console.log(req.body);
+        
     },
     '/test': (req, res, parameters) => {
         clientPromise.then((client) => {
             const db = client.db('test');
             const collection = db.collection('test');
-            collection.insertOne({test: 'test'});
+            collection.insertOne({test: 'test1'});
         })
         console.log('test');
         res.writeHead(200, {'Content-Type': 'text/html'});
@@ -121,7 +154,7 @@ function _staticFileHandler(filePath, res) {
 const server = http.createServer(function(req, res) {
     const filePath = path.join(__dirname, 'public', req.url)
     const contentType = getContentType(filePath);
-    console.log(req.url); 
+    // console.log(req.url); 
     var qstring = querystring.parse(req.url.split('?')[1]);
     req.url = req.url.split('?')[0];
     if(route[req.url]) {
